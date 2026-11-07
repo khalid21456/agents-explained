@@ -14,7 +14,7 @@ const PACE = 0.4
 
 export function usePlayer(steps: Step[], gate?: (i: number) => boolean, startAt = 0) {
   const clock = useRef<Clock>({ step: startAt, local: 0, waiting: false })
-  const ctl = useRef({ playing: true, once: false, speed: 1, loop: false })
+  const ctl = useRef({ playing: true, speed: 1, loop: false })
   const barRef = useRef<HTMLDivElement | null>(null)
   const stepsRef = useRef(steps)
   const gateRef = useRef(gate)
@@ -56,11 +56,6 @@ export function usePlayer(steps: Step[], gate?: (i: number) => boolean, startAt 
             c.local = cur.dur
             c.waiting = true
             k.playing = false
-            k.once = false
-          } else if (k.once) {
-            c.local = cur.dur
-            k.playing = false
-            k.once = false
           } else if (c.step < s.length - 1) {
             c.step += 1
             c.local = 0
@@ -91,19 +86,20 @@ export function usePlayer(steps: Step[], gate?: (i: number) => boolean, startAt 
   }, [sync])
 
   const actions = useMemo(() => {
-    const go = (i: number, mode: 'keep' | 'once' | 'play') => {
+    const go = (i: number, mode: 'keep' | 'play') => {
       const s = stepsRef.current
       const c = clock.current
       const k = ctl.current
       c.step = Math.max(0, Math.min(s.length - 1, i))
-      c.local = 0
       c.waiting = false
       if (mode === 'play') {
         k.playing = true
-        k.once = false
-      } else if (mode === 'once' || !k.playing || k.once) {
-        k.playing = true
-        k.once = true
+        c.local = 0
+      } else if (k.playing) {
+        c.local = 0
+      } else {
+        c.local = s[c.step].dur
+        c.waiting = c.step < s.length - 1 && !!gateRef.current?.(c.step)
       }
       sync()
     }
@@ -119,19 +115,17 @@ export function usePlayer(steps: Step[], gate?: (i: number) => boolean, startAt 
         c.local = 0
       }
       ctl.current.playing = true
-      ctl.current.once = false
       sync()
     }
     const pause = () => {
       ctl.current.playing = false
-      ctl.current.once = false
       sync()
     }
     return {
       play,
       pause,
-      toggle: () => (ctl.current.playing && !ctl.current.once ? pause() : play()),
-      next: () => go(clock.current.step + 1, clock.current.waiting ? 'once' : 'keep'),
+      toggle: () => (ctl.current.playing ? pause() : play()),
+      next: () => go(clock.current.step + 1, 'keep'),
       prev: () => go(clock.current.step - 1, 'keep'),
       seek: (i: number) => go(i, 'keep'),
       approve: () => go(clock.current.step + 1, 'play'),

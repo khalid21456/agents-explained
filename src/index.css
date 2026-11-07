@@ -1322,6 +1322,7 @@ kbd {
   }
   .controls {
     flex-wrap: wrap;
+    justify-content: center;
     padding: 10px 12px 12px;
   }
   .ctl-track {
@@ -1343,11 +1344,7 @@ kbd {
     max-height: 320px;
   }
   .code-panel {
-    border-left: 0;
-    border-top: 1px solid var(--border);
-  }
-  .code-body {
-    max-height: 70vh;
+    display: none;
   }
   .home {
     height: auto;
