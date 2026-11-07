@@ -173,3 +173,21 @@ export function dotGrid(ctx: CanvasRenderingContext2D, w: number, h: number, gap
 export function scaleFor(w: number, base = 760, min = 0.62) {
   return clamp(w / base, min, 1)
 }
+
+export function wrapLines(ctx: CanvasRenderingContext2D, s: string, maxW: number, hang = false) {
+  const out: string[] = []
+  for (const para of s.split('\n')) {
+    const lead = para.match(/^\s*/)?.[0] ?? ''
+    const words = para.trim().split(' ')
+    let line = lead
+    for (const word of words) {
+      const test = line.trim() ? `${line} ${word}` : `${lead}${word}`
+      if (ctx.measureText(test).width > maxW && line.trim()) {
+        out.push(line)
+        line = hang ? `${lead}  ${word}` : `${lead}${word}`
+      } else line = test
+    }
+    out.push(line)
+  }
+  return out
+}
