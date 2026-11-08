@@ -96,7 +96,7 @@ function build(o: Opts) {
 
 export const agenticRag: Lesson = {
   id: 'agentic-rag',
-  num: '08',
+  num: '09',
   nav: 'Agentic RAG',
   group: 'Foundations',
   title: 'Agentic RAG',

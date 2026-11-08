@@ -21,17 +21,9 @@ export default function Home({ onMenu }: { onMenu: () => void }) {
           actually work
         </h1>
         <p className="hero-sub">
-          From next-token prediction to stateful agents built with LangGraph. Pick a concept, press play, step through it, and watch the state and
-          the code change together.
+          Go from your first token to agents that reason, use tools and work as a team. Every concept comes alive: press play, step through it,
+          and watch the state and the real code change together. Then go build your own.
         </p>
-        <div className="hero-ctas">
-          <a href={`#/${LESSONS[0].id}`} className="primary-btn big">
-            <Icon name="play" size={18} /> Start with the basics
-          </a>
-          <a href="#/langgraph" className="ghost-btn big">
-            Jump to LangGraph
-          </a>
-        </div>
         <div className="cards">
           {LESSONS.map((l) => (
             <a key={l.id} href={`#/${l.id}`} className="card">
@@ -41,6 +33,11 @@ export default function Home({ onMenu }: { onMenu: () => void }) {
             </a>
           ))}
         </div>
+        <p className="credit home-credit">
+          Created by <b>Khalid Edaoudi</b>
+          <br />
+          AI Engineer
+        </p>
       </div>
     </div>
   )

@@ -8,7 +8,6 @@ interface Props {
   onClose: () => void
   opts: Opts
   setOpt: (key: string, value: string) => void
-  onCollapse?: () => void
 }
 
 function LessonOptions({ lesson, opts, setOpt }: { lesson: Lesson; opts: Opts; setOpt: (key: string, value: string) => void }) {
@@ -49,7 +48,7 @@ function LessonOptions({ lesson, opts, setOpt }: { lesson: Lesson; opts: Opts; s
   )
 }
 
-export default function Sidebar({ current, open, onClose, opts, setOpt, onCollapse }: Props) {
+export default function Sidebar({ current, open, onClose, opts, setOpt }: Props) {
   const groups = [...new Set(LESSONS.map((l) => l.group))]
   return (
     <>
@@ -65,13 +64,8 @@ export default function Sidebar({ current, open, onClose, opts, setOpt, onCollap
           <button type="button" className="icon-btn only-mobile" onClick={onClose} aria-label="Close menu">
             <Icon name="close" />
           </button>
-          {onCollapse && (
-            <button type="button" className="icon-btn small desktop-only" onClick={onCollapse} title="Hide sidebar ([)" aria-label="Hide sidebar">
-              <Icon name="panel-left" size={16} />
-            </button>
-          )}
         </div>
-        <nav className="side-nav">
+        <nav className="side-nav" style={{marginTop:"7px"}}>
           <a href="#/" className={`side-link ${current === '' ? 'on' : ''}`} onClick={onClose}>
             <span className="side-num">00</span>
             Overview
@@ -91,6 +85,11 @@ export default function Sidebar({ current, open, onClose, opts, setOpt, onCollap
             </div>
           ))}
         </nav>
+        <p className="credit">
+          Created by <b>Khalid Edaoudi</b>
+          <br />
+          AI Engineer
+        </p>
       </aside>
     </>
   )

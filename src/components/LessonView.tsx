@@ -160,7 +160,6 @@ function Runner({ lesson, opts, setOpt, startAt, onChoose, panels }: RunnerProps
         focus={step.focus ?? []}
         lead={lesson.lead}
         ideas={lesson.ideas}
-        onCollapse={panels.toggleCode}
       />
     </>
   )

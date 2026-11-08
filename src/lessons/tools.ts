@@ -92,7 +92,7 @@ print(final.content)
 
 export const tools: Lesson = {
   id: 'tools',
-  num: '04',
+  num: '05',
   nav: 'Tools',
   group: 'Foundations',
   title: 'Giving the model hands',

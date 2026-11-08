@@ -159,7 +159,7 @@ function build() {
 
 export const mcp: Lesson = {
   id: 'mcp',
-  num: '05',
+  num: '06',
   nav: 'MCP',
   group: 'Foundations',
   title: 'Model Context Protocol',

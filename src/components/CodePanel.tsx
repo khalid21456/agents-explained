@@ -10,10 +10,9 @@ interface Props {
   focus: string[]
   lead: string
   ideas: Idea[]
-  onCollapse?: () => void
 }
 
-export default function CodePanel({ files, stepFile, stepKey, focus, lead, ideas, onCollapse }: Props) {
+export default function CodePanel({ files, stepFile, stepKey, focus, lead, ideas }: Props) {
   const [tab, setTab] = useState<'code' | 'concepts'>('code')
   const [copied, setCopied] = useState(false)
   const [manual, setManual] = useState<{ file: string; at: number } | null>(null)
@@ -85,11 +84,6 @@ export default function CodePanel({ files, stepFile, stepKey, focus, lead, ideas
               <Icon name={copied ? 'check' : 'copy'} size={15} />
             </button>
           </>
-        )}
-        {onCollapse && (
-          <button type="button" className="icon-btn small" onClick={onCollapse} title="Hide code panel (])" aria-label="Hide code panel">
-            <Icon name="panel-right" size={15} />
-          </button>
         )}
       </header>
       {tab === 'code' ? (

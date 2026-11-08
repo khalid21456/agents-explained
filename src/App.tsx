@@ -75,7 +75,6 @@ export default function App() {
         onClose={() => setMenu(false)}
         opts={opts}
         setOpt={setOpt}
-        onCollapse={lesson ? toggleSide : undefined}
       />
       <main className="main">
         {lesson ? (

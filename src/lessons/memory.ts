@@ -73,7 +73,7 @@ answer = model.invoke(messages)
 
 export const memory: Lesson = {
   id: 'memory',
-  num: '06',
+  num: '07',
   nav: 'Memory',
   group: 'Foundations',
   title: 'Memory is what you put back in context',

@@ -105,7 +105,7 @@ function build(o: Opts) {
 
 export const guardrails: Lesson = {
   id: 'guardrails',
-  num: '09',
+  num: '10',
   nav: 'Guardrails',
   group: 'Foundations',
   title: 'Guardrails keep agents safe',

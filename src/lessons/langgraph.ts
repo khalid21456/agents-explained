@@ -265,7 +265,7 @@ function build(o: Opts) {
 
 export const langgraph: Lesson = {
   id: 'langgraph',
-  num: '13',
+  num: '16',
   nav: 'LangGraph',
   group: 'Frameworks',
   title: 'Agents as state machines',

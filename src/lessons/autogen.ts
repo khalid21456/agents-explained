@@ -143,7 +143,7 @@ function build(o: Opts) {
 
 export const autogen: Lesson = {
   id: 'autogen',
-  num: '14',
+  num: '17',
   nav: 'AutoGen',
   group: 'Frameworks',
   title: 'AutoGen: agents in a group chat',

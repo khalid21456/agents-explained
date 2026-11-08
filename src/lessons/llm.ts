@@ -62,7 +62,7 @@ function build() {
 export const llm: Lesson = {
   id: 'llm',
   num: '01',
-  nav: 'The LLM',
+  nav: 'LLM',
   group: 'Foundations',
   title: 'An LLM is a next-token predictor',
   lead: 'Given some text, it scores every possible next token, samples one, appends it, and repeats.',

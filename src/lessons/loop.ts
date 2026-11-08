@@ -97,7 +97,7 @@ function build() {
 
 export const loop: Lesson = {
   id: 'loop',
-  num: '03',
+  num: '04',
   nav: 'Agent loop',
   group: 'Foundations',
   title: 'Put the LLM in a loop',
