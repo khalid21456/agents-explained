@@ -137,7 +137,7 @@ function build(o: Opts) {
 
 export const evaluation: Lesson = {
   id: 'evaluation',
-  num: '09',
+  num: '11',
   nav: 'Evaluation',
   group: 'Foundations',
   title: 'Evaluation',

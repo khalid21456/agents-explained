@@ -4,20 +4,28 @@ import type { Idea } from '../lessons/types'
 import Icon from './Icon'
 
 interface Props {
-  file: string
-  code: string
+  files: { file: string; code: string }[]
+  stepFile?: string
+  stepKey: number
   focus: string[]
   lead: string
   ideas: Idea[]
+  onCollapse?: () => void
 }
 
-export default function CodePanel({ file, code, focus, lead, ideas }: Props) {
+export default function CodePanel({ files, stepFile, stepKey, focus, lead, ideas, onCollapse }: Props) {
   const [tab, setTab] = useState<'code' | 'concepts'>('code')
   const [copied, setCopied] = useState(false)
+  const [manual, setManual] = useState<{ file: string; at: number } | null>(null)
+  const stepActive = stepFile ?? files[0].file
+  const activeName = manual && manual.at === stepKey ? manual.file : stepActive
+  const active = files.find((f) => f.file === activeName) ?? files[0]
+  const file = active.file
+  const code = active.code
   const bodyRef = useRef<HTMLDivElement | null>(null)
   const lines = useMemo(() => code.trim().split('\n'), [code])
   const tokens = useMemo(() => lines.map((l) => tokenize(l)), [lines])
-  const focusKey = focus.join('\u0000')
+  const focusKey = file === stepActive ? focus.join('\u0000') : ''
   const hl = useMemo(() => {
     const keys = focusKey ? focusKey.split('\u0000') : []
     return lines.map((l) => keys.some((k) => l.includes(k)))
@@ -55,11 +63,33 @@ export default function CodePanel({ file, code, focus, lead, ideas }: Props) {
         </div>
         {tab === 'code' && (
           <>
-            <span className="file-name">{file}</span>
+            {files.length > 1 ? (
+              <div className="file-tabs" role="tablist" aria-label="Files">
+                {files.map((f) => (
+                  <button
+                    key={f.file}
+                    type="button"
+                    role="tab"
+                    aria-selected={f.file === file}
+                    className={`file-tab ${f.file === file ? 'on' : ''} ${f.file === stepActive ? 'step' : ''}`}
+                    onClick={() => setManual({ file: f.file, at: stepKey })}
+                  >
+                    {f.file}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <span className="file-name">{file}</span>
+            )}
             <button type="button" className="icon-btn small" onClick={copy} title="Copy code" aria-label="Copy code">
               <Icon name={copied ? 'check' : 'copy'} size={15} />
             </button>
           </>
+        )}
+        {onCollapse && (
+          <button type="button" className="icon-btn small" onClick={onCollapse} title="Hide code panel (])" aria-label="Hide code panel">
+            <Icon name="panel-right" size={15} />
+          </button>
         )}
       </header>
       {tab === 'code' ? (

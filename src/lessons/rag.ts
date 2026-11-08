@@ -115,7 +115,7 @@ function build() {
 
 export const rag: Lesson = {
   id: 'rag',
-  num: '06',
+  num: '07',
   nav: 'RAG',
   group: 'Foundations',
   title: 'Retrieval-Augmented Generation',

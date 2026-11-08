@@ -151,7 +151,7 @@ function build(o: Opts) {
 
 export const langchain: Lesson = {
   id: 'langchain',
-  num: '10',
+  num: '12',
   nav: 'LangChain',
   group: 'Frameworks',
   title: 'Composable building blocks',

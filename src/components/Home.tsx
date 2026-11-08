@@ -15,9 +15,6 @@ export default function Home({ onMenu }: { onMenu: () => void }) {
         <Icon name="menu" />
       </button>
       <div className="home-inner">
-        <span className="pill">
-          <span className="live-dot" /> An interactive field guide
-        </span>
         <h1>
           How <span className="grad">AI Agents</span>
           <br />

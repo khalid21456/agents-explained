@@ -6,16 +6,24 @@ import CodePanel from './CodePanel'
 import StatePanel from './StatePanel'
 import Icon from './Icon'
 
+export interface Panels {
+  sideHidden: boolean
+  codeHidden: boolean
+  toggleSide: () => void
+  toggleCode: () => void
+}
+
 interface Props {
   lesson: Lesson
   opts: Opts
   setOpt: (key: string, value: string) => void
   onMenu: () => void
+  panels: Panels
 }
 
 const CHOICE_ICON = { approve: 'check', edit: 'edit', reject: 'close' }
 
-export default function LessonView({ lesson, opts, setOpt, onMenu }: Props) {
+export default function LessonView({ lesson, opts, setOpt, onMenu, panels }: Props) {
   const [resume, setResume] = useState<{ key: string; step: number } | null>(null)
   const runKey = JSON.stringify(opts)
 
@@ -25,7 +33,7 @@ export default function LessonView({ lesson, opts, setOpt, onMenu }: Props) {
   }
 
   return (
-    <div className="lesson">
+    <div className={`lesson ${panels.codeHidden ? 'code-hidden' : ''}`}>
       <div className="mobile-bar">
         <button type="button" className="icon-btn" onClick={onMenu} aria-label="Open menu and options">
           <Icon name="menu" />
@@ -40,6 +48,7 @@ export default function LessonView({ lesson, opts, setOpt, onMenu }: Props) {
         setOpt={setOpt}
         startAt={resume && resume.key === runKey ? resume.step : 0}
         onChoose={choose}
+        panels={panels}
       />
     </div>
   )
@@ -51,15 +60,17 @@ interface RunnerProps {
   setOpt: (key: string, value: string) => void
   startAt: number
   onChoose: (key: string, value: string, step: number) => void
+  panels: Panels
 }
 
-function Runner({ lesson, opts, setOpt, startAt, onChoose }: RunnerProps) {
+function Runner({ lesson, opts, setOpt, startAt, onChoose, panels }: RunnerProps) {
   const inst = useMemo(() => lesson.build(opts), [lesson, opts])
   const player = usePlayer(inst.steps, inst.gate, Math.min(startAt, inst.steps.length - 1))
   const { ui } = player
   const step = inst.steps[ui.step]
   const Canvas = lesson.Canvas
   const { toggle, next, prev, restart } = player
+  const { toggleSide, toggleCode } = panels
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -78,11 +89,15 @@ function Runner({ lesson, opts, setOpt, startAt, onChoose }: RunnerProps) {
         prev()
       } else if (e.key === 'r' || e.key === 'R') {
         restart()
+      } else if (e.key === '[' && window.innerWidth > 980) {
+        toggleSide()
+      } else if (e.key === ']' && window.innerWidth > 980) {
+        toggleCode()
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [toggle, next, prev, restart])
+  }, [toggle, next, prev, restart, toggleSide, toggleCode])
 
   const pick = (value: string) => {
     if (!inst.choiceKey || opts[inst.choiceKey] === value) player.approve()
@@ -134,10 +149,19 @@ function Runner({ lesson, opts, setOpt, startAt, onChoose }: RunnerProps) {
           onSeek={player.seek}
           onSpeed={player.setSpeed}
           onLoop={player.toggleLoop}
+          panels={panels}
         />
       </div>
       <StatePanel steps={inst.steps} current={ui.step} onSeek={player.seek} />
-      <CodePanel file={inst.file} code={inst.code} focus={step.focus ?? []} lead={lesson.lead} ideas={lesson.ideas} />
+      <CodePanel
+        files={[{ file: inst.file, code: inst.code }, ...(inst.extraFiles ?? [])]}
+        stepFile={step.file}
+        stepKey={ui.step}
+        focus={step.focus ?? []}
+        lead={lesson.lead}
+        ideas={lesson.ideas}
+        onCollapse={panels.toggleCode}
+      />
     </>
   )
 }

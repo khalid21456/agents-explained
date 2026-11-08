@@ -1,6 +1,7 @@
 import type { RefObject } from 'react'
 import type { PlayerUi } from '../hooks/usePlayer'
 import type { Step } from '../lessons/types'
+import type { Panels } from './LessonView'
 import Icon from './Icon'
 
 interface Props {
@@ -14,11 +15,12 @@ interface Props {
   onSeek: (i: number) => void
   onSpeed: (v: number) => void
   onLoop: () => void
+  panels: Panels
 }
 
 const SPEEDS = [0.5, 1, 1.5, 2]
 
-export default function Controls({ ui, steps, barRef, onToggle, onPrev, onNext, onRestart, onSeek, onSpeed, onLoop }: Props) {
+export default function Controls({ ui, steps, barRef, onToggle, onPrev, onNext, onRestart, onSeek, onSpeed, onLoop, panels }: Props) {
   const total = steps.reduce((a, s) => a + s.dur, 0)
   const ticks = steps.map((s, i) => {
     const before = steps.slice(0, i).reduce((a, x) => a + x.dur, 0)
@@ -28,6 +30,16 @@ export default function Controls({ ui, steps, barRef, onToggle, onPrev, onNext, 
 
   return (
     <div className="controls">
+      <button
+        type="button"
+        className={`icon-btn desktop-only ${panels.sideHidden ? '' : 'active'}`}
+        onClick={panels.toggleSide}
+        title={`${panels.sideHidden ? 'Show' : 'Hide'} sidebar ([)`}
+        aria-label={`${panels.sideHidden ? 'Show' : 'Hide'} sidebar`}
+        aria-pressed={!panels.sideHidden}
+      >
+        <Icon name="panel-left" />
+      </button>
       <div className="ctl-buttons">
         <button type="button" className="icon-btn" onClick={onRestart} title="Restart (R)" aria-label="Restart">
           <Icon name="restart" />
@@ -85,6 +97,16 @@ export default function Controls({ ui, steps, barRef, onToggle, onPrev, onNext, 
         </div>
         <button type="button" className={`icon-btn ${ui.loop ? 'active' : ''}`} onClick={onLoop} title="Loop" aria-label="Loop" aria-pressed={ui.loop}>
           <Icon name="loop" />
+        </button>
+        <button
+          type="button"
+          className={`icon-btn desktop-only ${panels.codeHidden ? '' : 'active'}`}
+          onClick={panels.toggleCode}
+          title={`${panels.codeHidden ? 'Show' : 'Hide'} code panel (])`}
+          aria-label={`${panels.codeHidden ? 'Show' : 'Hide'} code panel`}
+          aria-pressed={!panels.codeHidden}
+        >
+          <Icon name="panel-right" />
         </button>
       </div>
     </div>

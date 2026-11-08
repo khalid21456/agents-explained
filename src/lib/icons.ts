@@ -497,3 +497,94 @@ export function bubble(ctx: CanvasRenderingContext2D, x: number, y: number, s: n
     ctx.fill()
   }
 }
+
+export type ServerGlyph = 'sun' | 'folder' | 'calendar'
+
+export function mcpServer(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, o: IconOpts & { glyph: ServerGlyph }) {
+  const { color, active, t } = o
+  const lw = Math.max(1.3, s * 0.05)
+  if (active) glow(ctx, x, y, s * 2, color, 0.32)
+  ctx.beginPath()
+  for (let i = 0; i < 6; i++) {
+    const a = Math.PI / 6 + (i * TAU) / 6
+    const px = x + Math.cos(a) * s * 0.78
+    const py = y + Math.sin(a) * s * 0.78
+    if (i === 0) ctx.moveTo(px, py)
+    else ctx.lineTo(px, py)
+  }
+  ctx.closePath()
+  ctx.lineJoin = 'round'
+  shell(ctx, color, active, lw)
+  ctx.save()
+  ctx.strokeStyle = color
+  ctx.fillStyle = color
+  ctx.lineWidth = s * 0.07
+  ctx.lineCap = 'round'
+  if (o.glyph === 'sun') {
+    const spin = active ? t * 0.8 : 0
+    ctx.beginPath()
+    ctx.arc(x, y, s * 0.18, 0, TAU)
+    ctx.fill()
+    for (let i = 0; i < 8; i++) {
+      const a = spin + (i * TAU) / 8
+      ctx.beginPath()
+      ctx.moveTo(x + Math.cos(a) * s * 0.28, y + Math.sin(a) * s * 0.28)
+      ctx.lineTo(x + Math.cos(a) * s * 0.4, y + Math.sin(a) * s * 0.4)
+      ctx.stroke()
+    }
+  } else if (o.glyph === 'folder') {
+    ctx.beginPath()
+    ctx.moveTo(x - s * 0.36, y - s * 0.18)
+    ctx.lineTo(x - s * 0.36, y + s * 0.26)
+    ctx.lineTo(x + s * 0.36, y + s * 0.26)
+    ctx.lineTo(x + s * 0.36, y - s * 0.12)
+    ctx.lineTo(x - s * 0.02, y - s * 0.12)
+    ctx.lineTo(x - s * 0.1, y - s * 0.22)
+    ctx.lineTo(x - s * 0.36, y - s * 0.22)
+    ctx.closePath()
+    ctx.stroke()
+    if (active) {
+      ctx.globalAlpha = 0.5 + 0.5 * Math.sin(t * 6)
+      ctx.fillRect(x - s * 0.2, y + s * 0.02, s * 0.4, s * 0.06)
+    }
+  } else {
+    rrect(ctx, x - s * 0.34, y - s * 0.26, s * 0.68, s * 0.56, s * 0.08)
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.moveTo(x - s * 0.34, y - s * 0.1)
+    ctx.lineTo(x + s * 0.34, y - s * 0.1)
+    ctx.stroke()
+    for (let r = 0; r < 2; r++)
+      for (let cI = 0; cI < 3; cI++) {
+        ctx.globalAlpha = active && r === 1 && cI === 1 ? 1 : 0.7
+        ctx.fillRect(x - s * 0.22 + cI * s * 0.17, y + r * s * 0.15, s * 0.1, s * 0.08)
+      }
+  }
+  ctx.restore()
+}
+
+export function mcpHub(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, o: IconOpts) {
+  const { color, active, t } = o
+  if (active) glow(ctx, x, y, s * 2.2, color, 0.35 + 0.1 * Math.sin(t * 3))
+  ctx.beginPath()
+  ctx.arc(x, y, s * 0.72, 0, TAU)
+  shell(ctx, color, active, Math.max(1.5, s * 0.06))
+  ctx.save()
+  ctx.strokeStyle = color
+  ctx.fillStyle = color
+  ctx.lineWidth = s * 0.08
+  ctx.lineCap = 'round'
+  ctx.beginPath()
+  ctx.moveTo(x - s * 0.14, y - s * 0.36)
+  ctx.lineTo(x - s * 0.14, y - s * 0.18)
+  ctx.moveTo(x + s * 0.14, y - s * 0.36)
+  ctx.lineTo(x + s * 0.14, y - s * 0.18)
+  ctx.stroke()
+  rrect(ctx, x - s * 0.27, y - s * 0.2, s * 0.54, s * 0.3, s * 0.1)
+  ctx.fill()
+  ctx.beginPath()
+  ctx.moveTo(x, y + s * 0.1)
+  ctx.lineTo(x, y + s * 0.36)
+  ctx.stroke()
+  ctx.restore()
+}

@@ -3,12 +3,15 @@ import { llm } from './llm'
 import { prompting } from './prompting'
 import { loop } from './loop'
 import { tools } from './tools'
+import { mcp } from './mcp'
 import { memory } from './memory'
 import { rag } from './rag'
+import { agenticRag } from './agenticRag'
 import { guardrails } from './guardrails'
 import { hitl } from './hitl'
 import { evaluation } from './evaluation'
 import { langchain } from './langchain'
 import { langgraph } from './langgraph'
+import { autogen } from './autogen'
 
-export const LESSONS: Lesson[] = [llm, prompting, loop, tools, memory, rag, guardrails, hitl, evaluation, langchain, langgraph]
+export const LESSONS: Lesson[] = [llm, prompting, loop, tools, mcp, memory, rag, agenticRag, guardrails, hitl, evaluation, langchain, langgraph, autogen]

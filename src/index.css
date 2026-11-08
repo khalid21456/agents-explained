@@ -912,6 +912,49 @@ kbd {
   background: rgba(167, 139, 250, 0.2);
 }
 
+.file-tabs {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.file-tab {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  font: 500 11.5px var(--mono);
+  padding: 4px 9px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.file-tab:hover {
+  color: var(--text);
+}
+
+.file-tab.on {
+  color: var(--text);
+  border-color: rgba(167, 139, 250, 0.4);
+  background: rgba(167, 139, 250, 0.14);
+}
+
+.file-tab.step::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--violet);
+  box-shadow: 0 0 6px var(--violet);
+}
+
 .file-name {
   margin-left: auto;
   font-family: var(--mono);
@@ -1361,6 +1404,56 @@ kbd {
 @media (max-width: 560px) {
   .cards {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 981px) {
+  .app {
+    transition: grid-template-columns 0.28s ease;
+  }
+  .sidebar {
+    min-width: 0;
+    overflow: hidden;
+    transition: visibility 0s linear 0s;
+  }
+  .side-top,
+  .side-nav {
+    width: var(--side-w);
+  }
+  .app.side-hidden {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+  .app.side-hidden .sidebar {
+    visibility: hidden;
+    border-right-color: transparent;
+    transition: visibility 0s linear 0.28s;
+  }
+  .lesson {
+    transition: grid-template-columns 0.28s ease;
+  }
+  .code-panel {
+    transition: visibility 0s linear 0s;
+  }
+  .code-panel > * {
+    min-width: var(--code-w);
+  }
+  .app.side-hidden .lesson {
+    grid-template-columns: minmax(0, 1fr) calc(var(--code-w) + var(--side-w));
+  }
+  .lesson.code-hidden,
+  .app.side-hidden .lesson.code-hidden {
+    grid-template-columns: minmax(0, 1fr) 0;
+  }
+  .lesson.code-hidden .code-panel {
+    visibility: hidden;
+    border-left-color: transparent;
+    transition: visibility 0s linear 0.28s;
+  }
+}
+
+@media (max-width: 980px) {
+  .desktop-only {
+    display: none !important;
   }
 }
 

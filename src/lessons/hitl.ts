@@ -112,7 +112,7 @@ function build(o: Opts) {
 
 export const hitl: Lesson = {
   id: 'human-in-the-loop',
-  num: '08',
+  num: '10',
   nav: 'Human-in-the-loop',
   group: 'Foundations',
   title: 'Human-in-the-loop',

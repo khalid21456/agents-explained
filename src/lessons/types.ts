@@ -14,6 +14,7 @@ export interface Step {
   dur: number
   color?: string
   focus?: string[]
+  file?: string
   state: Record<string, unknown>
 }
 
@@ -35,6 +36,7 @@ export interface LessonInstance {
   steps: Step[]
   file: string
   code: string
+  extraFiles?: { file: string; code: string }[]
   gate?: (i: number) => boolean
   interruptLabel?: (i: number) => string
   interruptSide?: 'left' | 'right' | 'top'
